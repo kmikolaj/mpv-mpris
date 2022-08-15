@@ -922,6 +922,10 @@ static void on_name_lost(GDBusConnection *connection,
 
 static void handle_property_change(const char *name, void *data, UserData *ud)
 {
+    if (!data) {
+        return;
+    }
+
     const char *prop_name = NULL;
     GVariant *prop_value = NULL;
     if (g_strcmp0(name, "pause") == 0) {
