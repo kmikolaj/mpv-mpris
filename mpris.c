@@ -774,6 +774,7 @@ static gboolean set_property_player(G_GNUC_UNUSED GDBusConnection *connection,
     } else if (g_strcmp0(property_name, "Volume") == 0) {
         double volume = g_variant_get_double(value);
         volume *= 100;
+        volume = CLAMP(volume, 0.0, 100.0);
         mpv_set_property(ud->mpv, "volume", MPV_FORMAT_DOUBLE, &volume);
 
     } else {
