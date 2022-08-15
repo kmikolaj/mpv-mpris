@@ -692,7 +692,7 @@ static GVariant *get_property_player(G_GNUC_UNUSED GDBusConnection *connection,
 
     } else if (g_strcmp0(property_name, "Volume") == 0) {
         double volume;
-        mpv_get_property(ud->mpv, "volume", MPV_FORMAT_DOUBLE, &volume);
+        mpv_get_property(ud->mpv, "ao-volume", MPV_FORMAT_DOUBLE, &volume);
         volume /= 100;
         ret = g_variant_new_double(volume);
 
@@ -775,7 +775,7 @@ static gboolean set_property_player(G_GNUC_UNUSED GDBusConnection *connection,
         double volume = g_variant_get_double(value);
         volume *= 100;
         volume = CLAMP(volume, 0.0, 100.0);
-        mpv_set_property(ud->mpv, "volume", MPV_FORMAT_DOUBLE, &volume);
+        mpv_set_property(ud->mpv, "ao-volume", MPV_FORMAT_DOUBLE, &volume);
 
     } else {
         g_set_error(error, G_DBUS_ERROR,
@@ -953,7 +953,7 @@ static void handle_property_change(const char *name, void *data, UserData *ud)
         prop_name = "Rate";
         prop_value = g_variant_new_double(*rate);
 
-    } else if (g_strcmp0(name, "volume") == 0) {
+    } else if (g_strcmp0(name, "ao-volume") == 0) {
         double *volume = data;
         *volume /= 100;
         prop_name = "Volume";
@@ -1103,7 +1103,7 @@ int mpv_open_cplugin(mpv_handle *mpv)
     mpv_observe_property(mpv, 0, "idle-active", MPV_FORMAT_FLAG);
     mpv_observe_property(mpv, 0, "media-title", MPV_FORMAT_STRING);
     mpv_observe_property(mpv, 0, "speed", MPV_FORMAT_DOUBLE);
-    mpv_observe_property(mpv, 0, "volume", MPV_FORMAT_DOUBLE);
+    mpv_observe_property(mpv, 0, "ao-volume", MPV_FORMAT_DOUBLE);
     mpv_observe_property(mpv, 0, "loop-file", MPV_FORMAT_STRING);
     mpv_observe_property(mpv, 0, "loop-playlist", MPV_FORMAT_STRING);
     mpv_observe_property(mpv, 0, "duration", MPV_FORMAT_INT64);
